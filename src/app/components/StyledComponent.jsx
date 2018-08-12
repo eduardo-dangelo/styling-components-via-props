@@ -9,7 +9,7 @@ class StyledComponent extends React.Component {
     const { styledComponent } = this.props
     const Wrapper = styled.section`
       padding: 15px;
-      background: ${styledComponent.sectionBg};
+      background: ${styledComponent.container.backgroundColor};
       text-align: center;
     `;
 
@@ -28,6 +28,16 @@ class StyledComponent extends React.Component {
       padding: 10px 15px;
     `;
 
+    const ImageContainer = styled.div`
+      position: relative;
+      margin: 30px auto;
+      max-width: 300px;
+      
+      img {
+        width: 100%;
+      }
+    `;
+
     return (
       <div>
         <Panel>
@@ -35,6 +45,9 @@ class StyledComponent extends React.Component {
           <Panel.Body>
             <Wrapper>
               <Title>Hello World, this is my first styled component!</Title>
+              <ImageContainer>
+                <img src={require('../img/cadaques.jpg')} alt="avatar"/>
+              </ImageContainer>
               <Button>
                 Styled Button
               </Button>

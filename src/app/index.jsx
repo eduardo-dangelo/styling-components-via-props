@@ -1,5 +1,5 @@
 import React from 'react'
-import StyleController from './components/StyleController'
+import Controller from './components/Controller/Controller'
 import StyledComponent from './components/StyledComponent'
 import { Row, Col } from 'react-bootstrap'
 
@@ -10,7 +10,7 @@ class App extends React.Component {
         <h1>Styling Components via Props</h1>
         <Row>
           <Col sm={6}>
-            <StyleController/>
+            <Controller/>
           </Col>
           <Col sm={6}>
             <StyledComponent/>
