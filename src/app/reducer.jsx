@@ -1,83 +1,81 @@
 
-const CHANGE_SECTION_BG = 'styledComponent/CHANGE_SECTION_BG'
-const CHANGE_SECTION_COLOR = 'styledComponent/CHANGE_SECTION_COLOR'
-const CHANGE_BUTTON_BG = 'styledComponent/CHANGE_BUTTON_BG'
+const CHANGE_BUTTON_BACKGROUND_COLOR = 'styledComponent/CHANGE_BUTTON_BACKGROUND_COLOR'
 const CHANGE_BUTTON_COLOR = 'styledComponent/CHANGE_BUTTON_COLOR'
+const CHANGE_CONTAINER_BACKGROUND_COLOR = 'styledComponent/CHANGE_CONTAINER_BACKGROUND_COLOR'
+const CHANGE_CONTAINER_COLOR = 'styledComponent/CHANGE_CONTAINER_COLOR'
 
 const initialValues = {
-  sectionBg: 'papayawhip',
-  sectionColor: 'palevioletred',
-  buttonBg: '#bbbbbb',
-  buttonColor: 'black',
   container: {
     backgroundColor: '#FFFFFF',
     borderWidth: 3,
     borderColor: '#BBBBBB',
-    borderStyle: 'solid'
-  },
-  heading: {
+    borderStyle: 'solid',
     color: '#666666',
-    content: 'Hello there!'
   },
   button: {
     color: '#666666',
     content: 'action button',
     backgroundColor: '#22AA44',
   },
-  image: {
-    filter: 'none',
-    percentage: 0,
-    size: 100,
-  }
 }
 
 export function reducer(state = initialValues, action) {
   switch (action.type) {
-    case CHANGE_SECTION_BG:
+    case CHANGE_CONTAINER_BACKGROUND_COLOR:
       return {
         ...state,
-        sectionBg: action.payload,
         container: {
           ...state.container,
           backgroundColor: action.payload,
         }
       };
-    case CHANGE_SECTION_COLOR:
+    case CHANGE_CONTAINER_COLOR:
       return {
         ...state,
-        sectionColor: action.payload,
+        container: {
+          ...state.container,
+          color: action.payload,
+        }
       };
-    case CHANGE_BUTTON_BG:
+    case CHANGE_BUTTON_BACKGROUND_COLOR:
       return {
         ...state,
-        buttonBg: action.payload,
+        button: {
+          ...state.button,
+          backgroundColor: action.payload,
+        }
       };
     case CHANGE_BUTTON_COLOR:
       return {
         ...state,
-        buttonColor: action.payload,
+        button: {
+          ...state.button,
+          color: action.payload,
+        }
       };
     default:
       return state;
   }
 }
 
-const changeSectionBg = (color) => ({ type: CHANGE_SECTION_BG, payload: color })
-const changeSectionColor = (color) => ({ type: CHANGE_SECTION_COLOR, payload: color })
-const changeButtonBg = (color) => ({ type: CHANGE_BUTTON_BG, payload: color })
+const changeContainerBackgroundColor = (value) => ({ type: CHANGE_CONTAINER_BACKGROUND_COLOR, payload: value })
+const changeContainerColor = (value) => ({ type: CHANGE_CONTAINER_COLOR, payload: value })
+const changeButtonBackgroundColor = (color) => ({ type: CHANGE_BUTTON_BACKGROUND_COLOR, payload: color })
 const changeButtonColor = (color) => ({ type: CHANGE_BUTTON_COLOR, payload: color })
 
-const updateValue = (newValue, key) => {
+const updateValue = (value, key) => {
   switch (key) {
     case 'containerBackgroundColor':
-      return changeSectionBg(newValue.hex)
+      return changeContainerBackgroundColor(value.hex)
+    case 'containerColor':
+      return changeContainerColor(value.hex)
+    case 'buttonBackgroundColor':
+      return changeButtonBackgroundColor(value.hex)
+    case 'buttonColor':
+      return changeButtonColor(value.hex)
   }
 }
 
 export const actions = {
-  changeSectionBg,
-  changeSectionColor,
-  changeButtonBg,
-  changeButtonColor,
   updateValue,
 }

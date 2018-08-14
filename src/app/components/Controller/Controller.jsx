@@ -4,13 +4,11 @@ import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import { actions } from '../../reducer'
 import ColorKnob from './components/knobs/ColorKnob'
+import styled from 'styled-components'
+import SliderKnob from "./components/knobs/SliderKnob";
 
 class Controller extends React.Component {
   state = {
-    sectionBackground: '#fff',
-    sectionColor: '#666',
-    buttonBackground: '#666',
-    buttonColor: '#fff',
     container: {
       backgroundColor: '#FFFFFF',
       borderWidth: 3,
@@ -52,7 +50,7 @@ class Controller extends React.Component {
     actions.changeButtonColor(color.hex)
   };
 
-  update = ({props}) => {
+  update = () => {
     console.log('this.props', this.props)
   }
 
@@ -63,22 +61,44 @@ class Controller extends React.Component {
       actions.updateValue(newValue, key)
     }
 
-    if (type === 'color') {
-      return (
-        <ColorKnob
-          color={value}
-          onChangeComplete={action}
-        />
-      )
+    switch (type) {
+      case 'color':
+        return (
+          <ColorKnob
+            color={value}
+            onChangeComplete={action}
+          />
+        )
+      case 'slider':
+        return (
+          <SliderKnob handleChange={action}/>
+        )
     }
   }
 
   render() {
-    const { styledComponent } = this.props
-    const container = styledComponent.container
-    const heading = styledComponent.heading
-    const image = styledComponent.image
-    const button = styledComponent.button
+    const {
+      styledComponent: {
+        container: {
+          backgroundColor: containerBackgroundColor,
+          color: containerColor,
+        },
+        button: {
+          backgroundColor: buttonBackgroundColor,
+          color: buttonColor
+        }
+      }
+    } = this.props
+
+    const List = styled.ul`
+      
+    `;
+
+    const ListItem = styled.li`
+      //display: flex;
+      //align-items: center;
+      justify-content: space-between;
+    `;
 
     return (
       <div>
@@ -88,102 +108,34 @@ class Controller extends React.Component {
             <Row>
               <Col sm={12}>
                 <h4><strong>CONTAINER:</strong></h4>
-                <ul>
-                  <li>
+                <List>
+                  <ListItem>
                     <strong>background-color:</strong>
-                    {this.knob('color', container.backgroundColor, 'containerBackgroundColor')}
-                  </li>
-                  {/*<li>*/}
-                    {/*<strong>border-width:</strong>*/}
-                    {/*{this.knob('slider', container.borderWidth, 'containerBorderWidth')}*/}
-                  {/*</li>*/}
-                  {/*<li>*/}
-                    {/*<strong>border-type:</strong>*/}
-                    {/*{this.knob('select', container.borderStyle, 'containerBorderStyle')}*/}
-                  {/*</li>*/}
-                  {/*<li>*/}
-                    {/*<strong>border-color:</strong>*/}
-                    {/*{this.knob('color', container.borderColor, 'containerBorderColor')}*/}
-                  {/*</li>*/}
-                </ul>
-              </Col>
-              <Col sm={12}>
-                <h4><strong>HEADING:</strong></h4>
-                <ul>
-                  {/*<li>*/}
-                    {/*<strong>color:</strong>*/}
-                    {/*{this.knob('color', heading.color, 'headingColor')}*/}
-                  {/*</li>*/}
-                  {/*<li>*/}
-                    {/*<strong>content:</strong>*/}
-                    {/*{this.knob('text', heading.content, 'headingContent')}*/}
-                  {/*</li>*/}
-                </ul>
+                    {this.knob('color', containerBackgroundColor, 'containerBackgroundColor')}
+                  </ListItem>
+                  <ListItem>
+                    <strong>color:</strong>
+                    {this.knob('color', containerColor, 'containerColor')}
+                  </ListItem>
+                </List>
               </Col>
               <Col sm={12}>
                 <h4><strong>BUTTON:</strong></h4>
-                <ul>
-                  {/*<li>*/}
-                    {/*<strong>color:</strong>*/}
-                    {/*{this.knob('color', button.color, 'buttonColor')}*/}
-                  {/*</li>*/}
-                  {/*<li>*/}
-                    {/*<strong>background-color:</strong>*/}
-                    {/*{this.knob('color', button.backgroundColor, 'buttonBackgroundColor')}*/}
-                  {/*</li>*/}
-                  {/*<li>*/}
-                    {/*<strong>content:</strong>*/}
-                    {/*{this.knob('text', button.content, 'buttonContent')}*/}
-                  {/*</li>*/}
-                </ul>
+                <List>
+                  <ListItem>
+                    <strong>background-color:</strong>
+                    {this.knob('color', buttonBackgroundColor, 'buttonBackgroundColor')}
+                  </ListItem>
+                  <ListItem>
+                    <strong>color:</strong>
+                    {this.knob('color', buttonColor, 'buttonColor')}
+                  </ListItem>
+                </List>
               </Col>
-              <Col sm={12}>
-                <h4><strong>IMAGE:</strong></h4>
-                <ul>
-                  {/*<li>*/}
-                    {/*<strong>filter:</strong>*/}
-                    {/*{this.knob('select', image.filter, 'imageFilter')}*/}
-                  {/*</li>*/}
-                  {/*<li>*/}
-                    {/*<strong>size</strong>*/}
-                    {/*{this.knob('slider', image.size, 'imageSize')}*/}
-                  {/*</li>*/}
-                </ul>
-              </Col>
-              {/*<Col md={6}>*/}
-                {/*<h4>Section background:</h4>*/}
-                {/*<ChromePicker*/}
-                  {/*color={styledComponent.sectionBg}*/}
-                  {/*onChangeComplete={this.changeSectionBackground}*/}
-                {/*/>*/}
-              {/*</Col>*/}
-              {/*<Col md={6}>*/}
-                {/*<h4>Section text-color:</h4>*/}
-                {/*<ChromePicker*/}
-                  {/*color={styledComponent.sectionColor}*/}
-                  {/*onChangeComplete={this.changeSectionTextColor}*/}
-                {/*/>*/}
-              {/*</Col>*/}
-              {/*<Col md={12}>*/}
-                {/*<h4><strong>BUTTON:</strong></h4>*/}
-              {/*</Col>*/}
-              {/*<Col md={6}>*/}
-                {/*<h4>Button background:</h4>*/}
-                {/*<ChromePicker*/}
-                  {/*color={styledComponent.buttonBg}*/}
-                  {/*onChangeComplete={this.changeButtonBackground}*/}
-                {/*/>*/}
-              {/*</Col>*/}
-              {/*<Col md={6}>*/}
-                {/*<h4>Button color:</h4>*/}
-                {/*<ChromePicker*/}
-                  {/*color={styledComponent.buttonColor}*/}
-                  {/*onChangeComplete={this.changeButtonColor}*/}
-                {/*/>*/}
-              {/*</Col>*/}
             </Row>
           </Panel.Body>
         </Panel>
+        <SliderKnob />
       </div>
     )
   }
