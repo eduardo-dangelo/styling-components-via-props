@@ -12,9 +12,9 @@ import { actions } from "../reducer";
 
 const Wrapper = styled.section`
   padding: 15px;
-  background: ${(props) => get(props.styledComponent, `themes[${props.theme}].container.backgroundColor`)};
-  border: ${(props) => get(props.styledComponent, `themes[${props.theme}].container.borderWidth`)}px solid ${(props) => get(props.styledComponent, `themes[${props.theme}].container.color`)};
-  border-radius: ${(props) => get(props.styledComponent, `themes[${props.theme}].container.borderRadius`)}px;
+  background: ${(props) => get(props.styledComponent, `themes[${props.theme}].present.container.backgroundColor`)};
+  border: ${(props) => get(props.styledComponent, `themes[${props.theme}].present.container.borderWidth`)}px solid ${(props) => get(props.styledComponent, `themes[${props.theme}].present.container.color`)};
+  border-radius: ${(props) => get(props.styledComponent, `themes[${props.theme}].present.container.borderRadius`)}px;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
  
@@ -23,15 +23,15 @@ const Wrapper = styled.section`
 const Title = styled.h1`
   font-size: 1.5em;
   text-align: center;
-  color: ${(props) => get(props.styledComponent, `themes[${props.theme}].container.color`)};
+  color: ${(props) => get(props.styledComponent, `themes[${props.theme}].present.container.color`)};
 `;
 
 const Button = styled.button`
   text-align: center;
-  color: ${(props) => get(props.styledComponent, `themes[${props.theme}].button.color`)};
-  border: ${(props) => get(props.styledComponent, `themes[${props.theme}].button.borderWidth`)}px solid ${(props) => get(props.styledComponent, `themes[${props.theme}].button.color`)};
-  border-radius: ${(props) => get(props.styledComponent, `themes[${props.theme}].button.borderRadius`)}px;
-  background: ${(props) => get(props.styledComponent, `themes[${props.theme}].button.backgroundColor`)};
+  color: ${(props) => get(props.styledComponent, `themes[${props.theme}].present.button.color`)};
+  border: ${(props) => get(props.styledComponent, `themes[${props.theme}].present.button.borderWidth`)}px solid ${(props) => get(props.styledComponent, `themes[${props.theme}].present.button.color`)};
+  border-radius: ${(props) => get(props.styledComponent, `themes[${props.theme}].present.button.borderRadius`)}px;
+  background: ${(props) => get(props.styledComponent, `themes[${props.theme}].present.button.backgroundColor`)};
   margin: auto;
   padding: 10px 15px;
 `;
@@ -104,24 +104,37 @@ const Input = styled.input`
   border: none;
   margin-top: 20px;
   padding: 0;
- color: ${(props) => props.styledComponent.themes[props.theme].container.color};
+ color: ${(props) => props.styledComponent.themes[props.theme].present.container.color};
+`;
+
+const ButtonInput = styled.input`
+  width: auto;
+  text-align: center;
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  color: ${(props) => props.styledComponent.themes[props.theme].present.button.color};
 `;
 
 class StyledComponent extends React.Component {
   state = {
+    buttonContentState: '',
+    containerContentState: '',
     showDropdownCard: false,
     showDropdownButton: false,
-    stateContent: '',
     showInput: false
   }
 
   componentWillMount() {
     const { styledComponent } = this.props
     const theme = styledComponent.activeTheme
-    const content = styledComponent.themes[theme].content
+    const containerContent = styledComponent.themes[theme].present.container.content
+    const buttonContent = styledComponent.themes[theme].present.button.content
 
     this.setState({
-      stateContent: content,
+      buttonContentState: buttonContent,
+      containerContentState: containerContent,
     })
   }
 
@@ -129,10 +142,21 @@ class StyledComponent extends React.Component {
     const { styledComponent } = this.props
     const theme = styledComponent.activeTheme
     const nextTheme = nextProps.styledComponent.activeTheme
+    // console.log('nextProps.styledComponent', nextProps.styledComponent)
+    const buttonContent = styledComponent.themes[nextTheme].present.button.content
+    const nextButtonContent = nextProps.styledComponent.themes[nextTheme].present.button.content
+    const containerContent = styledComponent.themes[nextTheme].present.container.content
+    const nextContainerContent = nextProps.styledComponent.themes[nextTheme].present.container.content
 
-    if (theme !== nextTheme) {
+    if (theme !== nextTheme || buttonContent !== nextButtonContent) {
       this.setState({
-        stateContent: styledComponent.themes[nextTheme].content
+        buttonContentState: nextButtonContent
+      })
+    }
+
+    if (theme !== nextTheme || containerContent !== nextContainerContent) {
+      this.setState({
+        containerContentState: nextContainerContent
       })
     }
   }
@@ -143,19 +167,29 @@ class StyledComponent extends React.Component {
     })
   }
 
-  changeContent = (e) => {
+  changeButtonContent = (e) => {
     const { actions, styledComponent } = this.props
-    const { stateContent } = this.state
+    const { buttonContentState } = this.state
     const theme = styledComponent.activeTheme
-    actions.changeContent(theme, stateContent)
+    actions.changeButtonContent(theme, buttonContentState)
+  }
+
+  changeContainerContent = (e) => {
+    const { actions, styledComponent } = this.props
+    const { containerContentState } = this.state
+    const theme = styledComponent.activeTheme
+    actions.changeContainerContent(theme, containerContentState)
+  }
+
+  changeButtonContentState = (e) => {
     this.setState({
-      showInput: false,
+      buttonContentState: e.target.value
     })
   }
 
-  changeStateContent = (e) => {
+  changeContainerContentState = (e) => {
     this.setState({
-      stateContent: e.target.value
+      containerContentState: e.target.value
     })
   }
 
@@ -178,16 +212,30 @@ class StyledComponent extends React.Component {
     })
   }
 
+  handleUndo = (e) => {
+    const { actions, styledComponent } = this.props
+    const theme = styledComponent.activeTheme
+
+    if (styledComponent.themes[theme].past.length > 0) {
+      actions.undo(theme)
+    }
+  }
+
   render() {
     const { styledComponent } = this.props
-    const { showDropdownCard, showDropdownButton, stateContent, showInput } = this.state
+    const { showDropdownCard, showDropdownButton, containerContentState, buttonContentState } = this.state
     const theme = styledComponent.activeTheme
     const content = get(styledComponent.themes, `${theme}.content`)
 
     return (
       <div>
         <Panel>
-          <Panel.Heading><strong>Styled Component</strong></Panel.Heading>
+          <Panel.Heading>
+            <strong>Styled Component</strong>
+            <button className="pull-right" onClick={this.handleUndo}>
+              undo
+            </button>
+          </Panel.Heading>
           <Panel.Body>
             <Wrapper
               styledComponent={styledComponent}
@@ -210,22 +258,30 @@ class StyledComponent extends React.Component {
               )}
               <Input
                 type="text"
-                value={stateContent}
-                onChange={this.changeStateContent}
+                value={containerContentState}
+                onChange={this.changeContainerContentState}
                 theme={theme}
                 styledComponent={styledComponent}
-                onBlur={this.changeContent}
+                onBlur={this.changeContainerContent}
               />
               <ImageContainer>
                 <img src={require('../img/cadaques.jpg')} alt="avatar"/>
               </ImageContainer>
+
               <Button
                 styledComponent={styledComponent}
                 theme={theme}
                 onMouseOver={this.handleButtonMouseHover}
 
               >
-                Styled Button
+                <ButtonInput
+                  type="text"
+                  value={buttonContentState}
+                  onChange={this.changeButtonContentState}
+                  theme={theme}
+                  styledComponent={styledComponent}
+                  onBlur={this.changeButtonContent}
+                />
                 {showDropdownButton && (
                   <ButtonToolbarWapper2>
                     <DropdownButton

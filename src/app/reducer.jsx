@@ -1,46 +1,58 @@
+import { last } from 'lodash'
+
 const CHANGE_BUTTON_BACKGROUND_COLOR = 'styledComponent/CHANGE_BUTTON_BACKGROUND_COLOR'
 const CHANGE_BUTTON_BORDER_RADIUS = 'styledComponent/CHANGE_BUTTON_BORDER_RADIUS'
 const CHANGE_BUTTON_BORDER_WIDTH = 'styledComponent/CHANGE_BUTTON_BORDER_WIDTH'
 const CHANGE_BUTTON_COLOR = 'styledComponent/CHANGE_BUTTON_COLOR'
+const CHANGE_BUTTON_CONTENT = 'styledComponent/CHANGE_BUTTON_CONTENT'
 const CHANGE_CONTAINER_BACKGROUND_COLOR = 'styledComponent/CHANGE_CONTAINER_BACKGROUND_COLOR'
 const CHANGE_CONTAINER_BORDER_RADIUS = 'styledComponent/CHANGE_CONTAINER_BORDER_RADIUS'
 const CHANGE_CONTAINER_BORDER_WIDTH = 'styledComponent/CHANGE_CONTAINER_BORDER_WIDTH'
 const CHANGE_CONTAINER_COLOR = 'styledComponent/CHANGE_CONTAINER_COLOR'
-const CHANGE_CONTENT = 'styledComponent/CHANGE_CONTENT'
+const CHANGE_CONTAINER_CONTENT = 'styledComponent/CHANGE_CONTAINER_CONTENT'
 const CHANGE_THEME = 'styledComponent/CHANGE_THEME'
+const UNDO = 'styledComponent/UNDO'
 
 const initialValues = {
   activeTheme: 'light',
   themes: {
     dark: {
-      button: {
-        backgroundColor: '#696893',
-        borderRadius: 0,
-        borderWidth: 1,
-        color: '#efefef',
-      },
-      container: {
-        backgroundColor: '#1d1c23',
-        borderRadius: 0,
-        borderWidth: 1,
-        color: '#d1d1d1',
-      },
-      content: 'Hello World, this is my first styled component!',
+      past: [],
+      present: {
+        button: {
+          backgroundColor: '#696893',
+          borderRadius: 0,
+          borderWidth: 1,
+          color: '#efefef',
+          content: 'Action Button',
+        },
+        container: {
+          backgroundColor: '#1d1c23',
+          borderRadius: 0,
+          borderWidth: 1,
+          color: '#d1d1d1',
+          content: 'Hello World, this is my first styled component!',
+        },
+      }
     },
     light: {
-      button: {
-        backgroundColor: '#b7b5ff',
-        borderRadius: 0,
-        borderWidth: 1,
-        color: '#232323',
-      },
-      container: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: 0,
-        borderWidth: 1,
-        color: '#666666',
-      },
-      content: 'Hello World, this is my first styled component!',
+      past: [],
+      present: {
+        button: {
+          backgroundColor: '#b7b5ff',
+          borderRadius: 0,
+          borderWidth: 1,
+          color: '#232323',
+          content: 'Action Button',
+        },
+        container: {
+          backgroundColor: '#FFFFFF',
+          borderRadius: 0,
+          borderWidth: 1,
+          color: '#666666',
+          content: 'Hello World, this is my first styled component!',
+        },
+      }
     },
   }
 }
@@ -53,10 +65,13 @@ export function reducer(state = initialValues, action) {
         themes: {
           ...state.themes,
           [action.payload.theme]: {
-            ...state.themes[action.payload.theme],
-            button: {
-              ...state.themes[action.payload.theme].button,
-              backgroundColor: action.payload.value
+            past: [...state.themes[action.payload.theme].past, state.themes[action.payload.theme].present],
+            present: {
+              ...state.themes[action.payload.theme].present,
+              button: {
+                ...state.themes[action.payload.theme].present.button,
+                backgroundColor: action.payload.value
+              }
             }
           }
         }
@@ -67,10 +82,13 @@ export function reducer(state = initialValues, action) {
         themes: {
           ...state.themes,
           [action.payload.theme]: {
-            ...state.themes[action.payload.theme],
-            button: {
-              ...state.themes[action.payload.theme].button,
-              borderWidth: action.payload.value
+            past: [ ...state.themes[ action.payload.theme ].past, state.themes[ action.payload.theme ].present],
+            present: {
+              ...state.themes[ action.payload.theme ].present,
+              button: {
+                ...state.themes[ action.payload.theme ].present.button,
+                borderWidth: action.payload.value
+              }
             }
           }
         }
@@ -81,10 +99,13 @@ export function reducer(state = initialValues, action) {
         themes: {
           ...state.themes,
           [action.payload.theme]: {
-            ...state.themes[action.payload.theme],
-            button: {
-              ...state.themes[action.payload.theme].button,
-              borderRadius: action.payload.value
+            past: [ ...state.themes[ action.payload.theme ].past, state.themes[ action.payload.theme ].present],
+            present: {
+              ...state.themes[ action.payload.theme ].present,
+              button: {
+                ...state.themes[ action.payload.theme ].present.button,
+                borderRadius: action.payload.value
+              }
             }
           }
         }
@@ -95,10 +116,30 @@ export function reducer(state = initialValues, action) {
         themes: {
           ...state.themes,
           [action.payload.theme]: {
-            ...state.themes[action.payload.theme],
-            button: {
-              ...state.themes[action.payload.theme].button,
-              color: action.payload.value
+            past: [ ...state.themes[ action.payload.theme ].past, state.themes[ action.payload.theme ].present],
+            present: {
+              ...state.themes[ action.payload.theme ].present,
+              button: {
+                ...state.themes[ action.payload.theme ].present.button,
+                color: action.payload.value
+              }
+            }
+          }
+        }
+      };
+    case CHANGE_BUTTON_CONTENT:
+      return {
+        ...state,
+        themes: {
+          ...state.themes,
+          [action.payload.theme]: {
+            past: [ ...state.themes[action.payload.theme].past, state.themes[action.payload.theme].present],
+            present: {
+              ...state.themes[action.payload.theme].present,
+              button: {
+                ...state.themes[action.payload.theme].present.button,
+                content: action.payload.value
+              }
             }
           }
         }
@@ -109,10 +150,13 @@ export function reducer(state = initialValues, action) {
         themes: {
           ...state.themes,
           [action.payload.theme]: {
-            ...state.themes[action.payload.theme],
-            container: {
-              ...state.themes[action.payload.theme].container,
-              backgroundColor: action.payload.value
+            past: [ ...state.themes[action.payload.theme].past, state.themes[action.payload.theme].present],
+            present: {
+              ...state.themes[action.payload.theme].present,
+              container: {
+                ...state.themes[action.payload.theme].present.container,
+                backgroundColor: action.payload.value
+              }
             }
           }
         }
@@ -123,10 +167,13 @@ export function reducer(state = initialValues, action) {
         themes: {
           ...state.themes,
           [action.payload.theme]: {
-            ...state.themes[action.payload.theme],
-            container: {
-              ...state.themes[action.payload.theme].container,
-              borderWidth: action.payload.value
+            past: [ ...state.themes[action.payload.theme].past, state.themes[action.payload.theme].present],
+            present: {
+              ...state.themes[action.payload.theme].present,
+              container: {
+                ...state.themes[action.payload.theme].present.container,
+                borderWidth: action.payload.value
+              }
             }
           }
         }
@@ -137,10 +184,13 @@ export function reducer(state = initialValues, action) {
         themes: {
           ...state.themes,
           [action.payload.theme]: {
-            ...state.themes[action.payload.theme],
-            container: {
-              ...state.themes[action.payload.theme].container,
-              borderRadius: action.payload.value
+            past: [ ...state.themes[action.payload.theme].past, state.themes[action.payload.theme].present],
+            present: {
+              ...state.themes[action.payload.theme].present,
+              container: {
+                ...state.themes[action.payload.theme].present.container,
+                borderRadius: action.payload.value
+              }
             }
           }
         }
@@ -151,22 +201,31 @@ export function reducer(state = initialValues, action) {
         themes: {
           ...state.themes,
           [action.payload.theme]: {
-            ...state.themes[action.payload.theme],
-            container: {
-              ...state.themes[action.payload.theme].container,
-              color: action.payload.value
+            past: [ ...state.themes[action.payload.theme].past, state.themes[action.payload.theme].present],
+            present: {
+              ...state.themes[action.payload.theme].present,
+              container: {
+                ...state.themes[action.payload.theme].present.container,
+                color: action.payload.value
+              }
             }
           }
         }
       };
-    case CHANGE_CONTENT:
+    case CHANGE_CONTAINER_CONTENT:
       return {
         ...state,
         themes: {
           ...state.themes,
           [action.payload.theme]: {
-            ...state.themes[action.payload.theme],
-            content: action.payload.value
+            past: [ ...state.themes[action.payload.theme].past, state.themes[action.payload.theme].present],
+            present: {
+              ...state.themes[action.payload.theme].present,
+              container: {
+                ...state.themes[action.payload.theme].present.container,
+                content: action.payload.value
+              }
+            }
           }
         }
       };
@@ -174,6 +233,17 @@ export function reducer(state = initialValues, action) {
       return {
         ...state,
         activeTheme: action.payload
+      };
+    case UNDO:
+      return {
+        ...state,
+        themes: {
+          ...state.themes,
+          [action.payload.theme]: {
+            past: state.themes[action.payload.theme].past.slice(0, state.themes[action.payload.theme].past.length - 1),
+            present: last(state.themes[action.payload.theme].past)
+          }
+        }
       };
     default:
       return state;
@@ -245,8 +315,16 @@ const changeContainerColor = (theme, value) => ({
   }
 })
 
-const changeContent = (theme, value) => ({
-  type: CHANGE_CONTENT,
+const changeButtonContent = (theme, value) => ({
+  type: CHANGE_BUTTON_CONTENT,
+  payload: {
+    theme,
+    value
+  }
+})
+
+const changeContainerContent = (theme, value) => ({
+  type: CHANGE_CONTAINER_CONTENT,
   payload: {
     theme,
     value
@@ -256,6 +334,13 @@ const changeContent = (theme, value) => ({
 const changeTheme = (theme) => ({
   type: CHANGE_THEME,
   payload: theme
+})
+
+const undo = (theme) => ({
+  type: UNDO,
+  payload: {
+    theme
+  }
 })
 
 
@@ -282,6 +367,8 @@ const updateValue = (key, theme, value) => {
 
 export const actions = {
   changeTheme,
-  changeContent,
+  changeContainerContent,
+  changeButtonContent,
   updateValue,
+  undo,
 }

@@ -35,10 +35,10 @@ class Controller extends React.Component {
     const { styledComponent, actions } = this.props
     const theme = get(styledComponent, 'activeTheme')
 
-    const containerBackgroundColor = get(styledComponent, `themes[${theme}].container.backgroundColor`)
-    const containerBorderWidth = get(styledComponent, `themes[${theme}].container.borderWidth`)
-    const containerBorderRadius = get(styledComponent, `themes[${theme}].container.borderRadius`)
-    const containerColor = get(styledComponent, `themes[${theme}].container.color`)
+    const containerBackgroundColor = get(styledComponent, `themes[${theme}].present.container.backgroundColor`)
+    const containerBorderWidth = get(styledComponent, `themes[${theme}].present.container.borderWidth`)
+    const containerBorderRadius = get(styledComponent, `themes[${theme}].present.container.borderRadius`)
+    const containerColor = get(styledComponent, `themes[${theme}].present.container.color`)
 
     return (
       <List>

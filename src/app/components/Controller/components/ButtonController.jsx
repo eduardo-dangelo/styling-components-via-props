@@ -36,10 +36,10 @@ class Controller extends React.Component {
     const { styledComponent, actions } = this.props
     const theme = get(styledComponent, 'activeTheme')
 
-    const buttonBackgroundColor = get(styledComponent, `themes[${theme}].button.backgroundColor`)
-    const buttonBorderWidth = get(styledComponent, `themes[${theme}].button.borderWidth`)
-    const buttonBorderRadius = get(styledComponent, `themes[${theme}].button.borderRadius`)
-    const buttonColor = get(styledComponent, `themes[${theme}].button.color`)
+    const buttonBackgroundColor = get(styledComponent, `themes[${theme}].present.button.backgroundColor`)
+    const buttonBorderWidth = get(styledComponent, `themes[${theme}].present.button.borderWidth`)
+    const buttonBorderRadius = get(styledComponent, `themes[${theme}].present.button.borderRadius`)
+    const buttonColor = get(styledComponent, `themes[${theme}].present.button.color`)
 
     return (
       <List>
