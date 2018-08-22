@@ -6,16 +6,30 @@ import { actions } from '../../reducer'
 import ColorKnob from './components/knobs/ColorKnob'
 import styled from 'styled-components'
 import { get } from 'lodash'
+import KnobController from './components/knobs/KnobController'
+import ContainerController from './components/ContainerController'
+import ButtonController from './components/ButtonController'
 
 const List = styled.ul`
-      
-    `;
+  padding-left: 15px;
+`;
 
 const ListItem = styled.li`
-      //display: flex;
-      //align-items: center;
-      justify-content: space-between;
-    `;
+  //align-items: center;
+  justify-content: space-between;
+  clear: both;
+  display: table;
+  margin-bottom: 5px;
+  
+  & > div, strong {
+    float: left;
+    margin-right: 15px;
+  }
+`;
+
+const Heading = styled.h4`
+  margin-top: 35px;
+`;
 
 class Controller extends React.Component {
 
@@ -24,30 +38,9 @@ class Controller extends React.Component {
     actions.changeTheme(theme)
   };
 
-  renderColorKnob = (key, theme, value) => {
-    const { actions } = this.props
-
-    const action = (newValue) => {
-      actions.updateValue(key, theme, newValue)
-    }
-
-    return (
-      <ColorKnob
-        color={value}
-        onChangeComplete={action}
-      />
-    )
-  }
-
   render() {
     const { styledComponent } = this.props
     const theme = get(styledComponent, 'activeTheme')
-
-    const buttonBackgroundColor = get(styledComponent, `themes[${theme}].button.backgroundColor`)
-    const buttonColor = get(styledComponent, `themes[${theme}].button.color`)
-    const containerBackgroundColor = get(styledComponent, `themes[${theme}].container.backgroundColor`)
-    const containerColor = get(styledComponent, `themes[${theme}].container.color`)
-
     return (
       <div>
         <Panel>
@@ -74,30 +67,12 @@ class Controller extends React.Component {
                 </ButtonGroup>
               </Col>
               <Col sm={12}>
-                <h4><strong>CONTAINER:</strong></h4>
-                <List>
-                  <ListItem>
-                    <strong>background-color:</strong>
-                    {this.renderColorKnob('containerBackgroundColor', theme, containerBackgroundColor)}
-                  </ListItem>
-                  <ListItem>
-                    <strong>color:</strong>
-                    {this.renderColorKnob('containerColor', theme, containerColor)}
-                  </ListItem>
-                </List>
+                <Heading><strong>CONTAINER:</strong></Heading>
+                <ContainerController/>
               </Col>
               <Col sm={12}>
-                <h4><strong>BUTTON:</strong></h4>
-                <List>
-                  <ListItem>
-                    <strong>background-color:</strong>
-                    {this.renderColorKnob('buttonBackgroundColor', theme, buttonBackgroundColor)}
-                  </ListItem>
-                  <ListItem>
-                    <strong>color:</strong>
-                    {this.renderColorKnob('buttonColor', theme, buttonColor)}
-                  </ListItem>
-                </List>
+                <Heading><strong>BUTTON:</strong></Heading>
+                <ButtonController/>
               </Col>
             </Row>
           </Panel.Body>

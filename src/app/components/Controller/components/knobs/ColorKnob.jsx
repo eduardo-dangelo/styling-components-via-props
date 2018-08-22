@@ -2,6 +2,29 @@ import React from 'react'
 import { ChromePicker } from 'react-color'
 import styled from 'styled-components'
 
+const Button = styled.button`
+      width: 16px;
+      height: 16px;
+      border: 1px solid #9b9b9b;
+      background: ${(props) => (props.color)};
+      margin-right: 10px;
+    `;
+
+const OverlayContainer = styled.div`
+      position: absolute;
+      z-index: 2;
+    `;
+
+const HiddenElement = styled.div`
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      opacity: 0;
+    `;
+
+
 class ColorKnob extends React.Component {
   state = {
     showColorPicker: false,
@@ -27,31 +50,21 @@ class ColorKnob extends React.Component {
     const { color, onChangeComplete } = this.props
     const { showColorPicker } = this.state
 
-    const Button = styled.button`
-      width: 16px;
-      height: 16px;
-      border: 1px solid #9b9b9b;
-      background: ${color};
-      margin-right: 10px;
-    `;
-
-    const OverlayContainer = styled.div`
-      position: absolute;
-      z-index: 2;
-    `;
-
     return (
       <div>
-        <Button onClick={this.handleClick} />
+        <Button color={color} onClick={this.handleClick} />
         {color}
         {showColorPicker && (
           <OverlayContainer >
             <ChromePicker
               color={color}
+              tabindex={'0'}
               onChangeComplete={onChangeComplete}
+              display={showColorPicker}
             />
           </OverlayContainer>
         )}
+        {showColorPicker && <HiddenElement onClick={this.handleBlur}/>}
       </div>
     )
   }

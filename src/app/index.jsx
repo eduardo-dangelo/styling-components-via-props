@@ -9,10 +9,10 @@ class App extends React.Component {
       <div className="container">
         <h1>Styling Components via Props</h1>
         <Row>
-          <Col sm={6}>
+          <Col sm={5}>
             <Controller/>
           </Col>
-          <Col sm={6}>
+          <Col sm={7}>
             <StyledComponent/>
           </Col>
         </Row>
