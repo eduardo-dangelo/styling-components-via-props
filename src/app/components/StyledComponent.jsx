@@ -17,7 +17,7 @@ const Wrapper = styled.section`
   border-radius: ${(props) => get(props.styledComponent, `themes[${props.theme}].present.container.borderRadius`)}px;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
- 
+  transition: .2s ease;
 `;
 
 const Title = styled.h1`
@@ -34,6 +34,8 @@ const Button = styled.button`
   background: ${(props) => get(props.styledComponent, `themes[${props.theme}].present.button.backgroundColor`)};
   margin: auto;
   padding: 10px 15px;
+  transition: .2s ease;
+  position: relative;
 `;
 
 const ImageContainer = styled.div`
@@ -48,7 +50,7 @@ const ImageContainer = styled.div`
   }
 `;
 
-const ButtonToolbarWapper = styled(ButtonToolbar)`
+const ButtonToolbarWapperContainer = styled(ButtonToolbar)`
   position: absolute;
   top: 70px;
   right: 45px;
@@ -71,11 +73,10 @@ const ButtonToolbarWapper = styled(ButtonToolbar)`
   }
   `;
 
-const ButtonToolbarWapper2 = styled(ButtonToolbar)`
+const ButtonToolbarWapperButton = styled(ButtonToolbar)`
   position: absolute;
-  margin-left: 80px;
-  bottom: 81px;
-  //right: 200px;
+  top: -15px;
+  right: -15px;
   
   .dropdown-toggle {
     border-radius: 50%;
@@ -244,7 +245,7 @@ class StyledComponent extends React.Component {
               onMouseLeave={this.handleCardMouseLeave}
             >
               {showDropdownCard && (
-                <ButtonToolbarWapper>
+                <ButtonToolbarWapperContainer>
                   <DropdownButton
                     bsStyle="default"
                     title={'...'}
@@ -254,7 +255,7 @@ class StyledComponent extends React.Component {
                   >
                     <ContainerController/>
                   </DropdownButton>
-                </ButtonToolbarWapper>
+                </ButtonToolbarWapperContainer>
               )}
               <Input
                 type="text"
@@ -283,7 +284,7 @@ class StyledComponent extends React.Component {
                   onBlur={this.changeButtonContent}
                 />
                 {showDropdownButton && (
-                  <ButtonToolbarWapper2>
+                  <ButtonToolbarWapperButton>
                     <DropdownButton
                       bsStyle="default"
                       title={'...'}
@@ -293,7 +294,7 @@ class StyledComponent extends React.Component {
                     >
                       <ButtonController tabindex={"0"}/>
                     </DropdownButton>
-                  </ButtonToolbarWapper2>
+                  </ButtonToolbarWapperButton>
                 )}
               </Button>
             </Wrapper>

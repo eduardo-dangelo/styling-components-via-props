@@ -70,7 +70,7 @@ class Controller extends React.Component {
             theme={theme}
             type="btnGroup"
             value={containerBorderWidth}
-            options={[0,1,2,3,4,5,6]}
+            options={[0,1,2,3,4,5,18]}
           />
         </ListItem>
         <ListItem>
@@ -81,7 +81,7 @@ class Controller extends React.Component {
             theme={theme}
             type="btnGroup"
             value={containerBorderRadius}
-            options={[0,3,14,18,25]}
+            options={[0,3,14,18,25,90]}
           />
         </ListItem>
       </List>
