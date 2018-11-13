@@ -8,7 +8,6 @@ import KnobController from './knobs/KnobController'
 
 const List = styled.ul`
   padding-left: 15px;
-  max-width: 280px;
 `;
 
 const ListItem = styled.li`

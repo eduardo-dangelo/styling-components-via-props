@@ -1,5 +1,5 @@
 import React from 'react'
-import { ButtonToolbar, DropdownButton, MenuItem, Panel } from 'react-bootstrap'
+import { Alert, ButtonToolbar, Col, DropdownButton, MenuItem, Panel } from 'react-bootstrap'
 import styled, { keyframes } from 'styled-components'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
@@ -232,7 +232,7 @@ class StyledComponent extends React.Component {
       <div>
         <Panel>
           <Panel.Heading>
-            <strong>Styled Component</strong>
+            <strong>Component</strong>
             <button className="pull-right" onClick={this.handleUndo}>
               undo
             </button>

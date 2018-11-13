@@ -1,5 +1,5 @@
 import React from 'react'
-import { Panel, Row, Col, ButtonGroup, Button } from 'react-bootstrap'
+import { Panel, Row, Col, ButtonGroup, Button, Alert } from 'react-bootstrap'
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import { actions } from '../../reducer'
@@ -45,12 +45,13 @@ class Controller extends React.Component {
       <div>
         <Panel>
           <Panel.Heading>
-            <strong>Styling Controller</strong>
+            <strong>Controller</strong>
           </Panel.Heading>
           <Panel.Body>
             <Row>
               <Col sm={12}>
-                <h4><strong>THEME:</strong></h4>
+
+                <h4>Theme:</h4>
                 <ButtonGroup>
                   <Button
                     bsStyle={theme === 'dark' ? 'info' : 'default'}
@@ -67,11 +68,11 @@ class Controller extends React.Component {
                 </ButtonGroup>
               </Col>
               <Col sm={12}>
-                <Heading><strong>CONTAINER:</strong></Heading>
+                <Heading>Container:</Heading>
                 <ContainerController/>
               </Col>
               <Col sm={12}>
-                <Heading><strong>BUTTON:</strong></Heading>
+                <Heading>Button:</Heading>
                 <ButtonController/>
               </Col>
             </Row>
