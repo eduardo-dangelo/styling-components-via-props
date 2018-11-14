@@ -2,6 +2,10 @@ import React from 'react'
 import { ChromePicker } from 'react-color'
 import styled from 'styled-components'
 
+const Knob = styled.div`
+  position: relative;
+`;
+
 const Button = styled.button`
       width: 16px;
       height: 16px;
@@ -12,7 +16,8 @@ const Button = styled.button`
 
 const OverlayContainer = styled.div`
       position: absolute;
-      z-index: 2;
+      z-index: 4;
+      right: calc(100% - 16px);
     `;
 
 const HiddenElement = styled.div`
@@ -51,7 +56,7 @@ class ColorKnob extends React.Component {
     const { showColorPicker } = this.state
 
     return (
-      <div>
+      <Knob>
         <Button color={color} onClick={this.handleClick} />
         {color}
         {showColorPicker && (
@@ -65,7 +70,7 @@ class ColorKnob extends React.Component {
           </OverlayContainer>
         )}
         {showColorPicker && <HiddenElement onClick={this.handleBlur}/>}
-      </div>
+      </Knob>
     )
   }
 }
